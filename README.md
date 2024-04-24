@@ -16,9 +16,6 @@ This project is a decentralized implementation of the Airbnb platform, built on 
 
 To run this project locally, you'll need to have the following installed:
 
-- [Node.js](https://nodejs.org/en/) (v12 or later)
-- [Truffle](https://trufflesuite.com/) (a development environment for Ethereum)
-- [Ganache](https://trufflesuite.com/ganache/) (a local Ethereum blockchain for testing)
 - [MetaMask](https://metamask.io/) (a cryptocurrency wallet)
 
 ## Installation

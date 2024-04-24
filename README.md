@@ -24,7 +24,7 @@ Just use  Remix IDE on browser
 
 ## Usage
 
-Keep atleast 3 accounts on MetaMask, admin, owner, tenant
+Keep atleast 3 accounts on MetaMask (admin, owner, tenant)
 
 Check commments on every code, start with `b.sol`
 

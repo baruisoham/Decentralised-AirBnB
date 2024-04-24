@@ -23,26 +23,15 @@ To run this project locally, you'll need to have the following installed:
 
 ## Installation
 
-1. Install the required dependencies:
-
-`npm install`
-`npm install -g truffle`
-`npm install -g ganache`
+Just use  Remix IDE on browser
 
 ## Usage
 
-1. Start a local Ethereum blockchain using Ganache.
+Keep atleast 3 accounts on MetaMask, admin, owner, tenant
 
-2. In a new terminal window, navigate to the project directory and compile the smart contracts:
-  `truffle compile`
+Check commments on every code, start with `b.sol`
 
-3. Deploy the smart contracts to the local blockchain:
-  `truffle migrate`
-
-4. Start the development server:
-  `npm run dev`
-
-5. Open your web browser and navigate to `http://localhost:3000` to interact with the Decentralized Airbnb application.
+then move over to `airbnb.sol`
 
 ## Contributing
 

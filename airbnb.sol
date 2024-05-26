@@ -259,7 +259,7 @@ contract DecentralAirbnb is PriceConverter {
     }
 
     function getRentalInfo(uint256 _id)             // returns the rental property info from the rentals array
-        external                                    // rentals array holds a struct called RentalInfo that holds values like location, name, description
+        external                                    // each element in rentals array holds a struct called RentalInfo that holds values like location, name, description for that specific property
         view
         isRental(_id)
         returns (RentalInfo memory)

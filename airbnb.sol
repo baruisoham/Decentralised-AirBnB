@@ -117,8 +117,10 @@ contract DecentralAirbnb is PriceConverter {
     //--------------------------------------------------------------------
     // MODIFIERS
 
+
+    //if msg.sender who is trying to execute the contract is not admin, then revert the contract back
     modifier onlyAdmin() {
-        if(msg.sender != admin) revert DecentralAirbnb__OnlyAdmin();
+        if(msg.sender != admin) revert DecentralAirbnb__OnlyAdmin();            
         _;
     }
 
@@ -187,7 +189,7 @@ contract DecentralAirbnb is PriceConverter {
         uint256 _id,
         uint256 _fromDateTimestamp,
         uint256 _toDateTimestamp
-    ) external payable isRental(_id) {
+    ) external payable isRental(_id) {              //function can be called from outside and is payable
 
         RentalInfo memory _rental = rentals[_id];
 
@@ -201,11 +203,11 @@ contract DecentralAirbnb is PriceConverter {
         if(msg.value != _amount) revert DecentralAirbnb__InsufficientAmount();
         if(checkIfBooked(_id, _fromDateTimestamp, _toDateTimestamp)) revert DecentralAirbnb__AlreadyBooked();
 
-        rentalBookings[_id].push(
+        rentalBookings[_id].push(                                           // seperate maps were made for each property, when new booking for a property is added, it is added to that property's map with from and to dates
             Booking(msg.sender, _fromDateTimestamp, _toDateTimestamp)
         );
 
-        (bool success,) = payable(_rental.owner).call{value: msg.value}("");
+        (bool success,) = payable(_rental.owner).call{value: msg.value}("");        // transfer money if success
         if (!success) revert DecentralAirbnb__TransferFailed();
 
         emit NewBookAdded(
@@ -217,17 +219,17 @@ contract DecentralAirbnb is PriceConverter {
         );
     }
 
-    function checkIfBooked(
+    function checkIfBooked(             // was called when we were adding rental
         uint256 _id,
         uint256 _fromDateTimestamp,
         uint256 _toDateTimestamp
     ) internal view returns (bool) {
 
-        Booking[] memory _rentalBookings = rentalBookings[_id];
+        Booking[] memory _rentalBookings = rentalBookings[_id];         // list of all the bookings for the property id
 
         // Make sure the rental is available for the booking dates
         for (uint256 i = 0; i < _rentalBookings.length;) {
-            if (
+            if (                                                                //this condition checks if any overlap with previous bookings, if yes, then return true
                 ((_fromDateTimestamp >= _rentalBookings[i].fromTimestamp) &&
                     (_fromDateTimestamp <= _rentalBookings[i].toTimestamp)) ||
                 ((_toDateTimestamp >= _rentalBookings[i].fromTimestamp) &&
@@ -239,7 +241,7 @@ contract DecentralAirbnb is PriceConverter {
                 ++i;
             }
         }
-        return false;
+        return false;           // no overlap
     }
 
     function getRentals() external view returns (RentalInfo[] memory) {
@@ -251,18 +253,18 @@ contract DecentralAirbnb is PriceConverter {
         external
         view
         isRental(_id)
-        returns (Booking[] memory)
+        returns (Booking[] memory)              // it ensures that the return type is a booking struct from the memory  
     {
-        return rentalBookings[_id];
+        return rentalBookings[_id];             // each element in rentalbooking array holds a struct called Booking
     }
 
-    function getRentalInfo(uint256 _id)
-        external
+    function getRentalInfo(uint256 _id)             // returns the rental property info from the rentals array
+        external                                    // rentals array holds a struct called RentalInfo that holds values like location, name, description
         view
         isRental(_id)
         returns (RentalInfo memory)
     {
-        return rentals[_id];
+        return rentals[_id];                        // return a specific element from rentals array, this element is a struct of RentalInfo
     }
 
     // ADMIN FUNCTIONS
@@ -272,7 +274,7 @@ contract DecentralAirbnb is PriceConverter {
     }
 
     function withdrawBalance() external onlyAdmin {
-        (bool success,) = payable(admin).call{value: address(this).balance}("");
+        (bool success,) = payable(admin).call{value: address(this).balance}("");            // payable to admin, call and pay from contract's address, pay the balance entirely
         if (!success) revert DecentralAirbnb__TransferFailed();
     }
 }
